@@ -57,7 +57,7 @@ public class DriveManuallyCommand extends CommandBase {
             /*
             translationXPercent *= abs(pow(translationXPercent, 2))
             translationYPercent *= abs(pow(translationYPercent, 2));
-            rotationPercent *= abs(pow(rotationPercent, 2);
+            rotationPercent *= abs(pow(rotationPercent, 2); //bruh
              */
 
             translationXPercent = translationXLimiter.calculate(translationXPercent);
