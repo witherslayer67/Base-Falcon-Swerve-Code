@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.pow;
+
 
 public class DriveManuallyCommand extends CommandBase {
         private final DriveSubsystem drive;
@@ -36,43 +39,52 @@ public class DriveManuallyCommand extends CommandBase {
             translationYPercent = -Constants.driveController.getRawAxis(0);
             rotationPercent = -Constants.driveController.getRawAxis(4);
 
-            if (Math.abs(translationXPercent) < Constants.deadzone){
+            if (abs(translationXPercent) < Constants.deadzone){
                 translationXPercent = 0.0;
             }
 
-            if (Math.abs(translationYPercent) < Constants.deadzone){
+            if (abs(translationYPercent) < Constants.deadzone){
                 translationYPercent = 0.0;
             }
 
-            if (Math.abs(rotationPercent) < Constants.deadzone){
+            if (abs(rotationPercent) < Constants.deadzone){
                 rotationPercent = 0.0;
             }
 
             translationXPercent *= 1.00;
             translationYPercent *= 1.00;
             rotationPercent *= 1.00;
+            /*
+            translationXPercent *= abs(pow(translationXPercent, 2))
+            translationYPercent *= abs(pow(translationYPercent, 2));
+            rotationPercent *= abs(pow(rotationPercent, 2);
+             */
 
             translationXPercent = translationXLimiter.calculate(translationXPercent);
             translationYPercent = translationYLimiter.calculate(translationYPercent);
             rotationPercent = rotationLimiter.calculate(rotationPercent);
-
-            if (Math.abs(translationXPercent) < Constants.deadzone){
+            /*
+            translationXPercent = translationXLimiter.calculate(translationXPercent * abs(pow(translationXPercent, 1.96)));
+            translationYPercent = translationYLimiter.calculate(translationYPercent * abs(pow(translationYPercent, 1.96)));
+            rotationPercent = rotationLimiter.calculate(rotationPercent * abs(pow(rotationPercent, 1.96)));
+             */
+            if (abs(translationXPercent) < Constants.deadzone){
                 translationXPercent = 0.0;
             }
 
-            if (Math.abs(translationYPercent) < Constants.deadzone){
+            if (abs(translationYPercent) < Constants.deadzone){
                 translationYPercent = 0.0;
             }
 
-            if (Math.abs(rotationPercent) < Constants.deadzone){
+            if (abs(rotationPercent) < Constants.deadzone){
                 rotationPercent = 0.0;
             }
 
             drive.drive(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                            translationXPercent * Constants.maxVelocity,
-                            translationYPercent * Constants.maxVelocity,
-                            rotationPercent * Constants.maxAngularVelocity,
+                            translationXPercent * abs(pow(translationXPercent, 1.96)) * Constants.maxVelocity,
+                            translationYPercent * abs(pow(translationYPercent, 1.96)) * Constants.maxVelocity,
+                            rotationPercent * abs(pow(rotationPercent, 1.96)) * Constants.maxAngularVelocity,
                             (drive.isRobotOriented() ? Rotation2d.fromDegrees(0.0) : drive.getGyroscopeRotation())
                     )
             );
