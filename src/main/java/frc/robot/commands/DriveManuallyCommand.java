@@ -82,13 +82,21 @@ public class DriveManuallyCommand extends CommandBase {
 
             drive.drive(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                            translationXPercent * abs(pow(translationXPercent, 1.96)) * Constants.maxVelocity,
-                            translationYPercent * abs(pow(translationYPercent, 1.96)) * Constants.maxVelocity,
-                            rotationPercent * abs(pow(rotationPercent, 1.96)) * Constants.maxAngularVelocity,
+                            abs(pow(translationXPercent, 1.96)) * Constants.maxVelocity,
+                            abs(pow(translationYPercent, 1.96)) * Constants.maxVelocity,
+                            abs(pow(rotationPercent, 1.96)) * Constants.maxAngularVelocity,
                             (drive.isRobotOriented() ? Rotation2d.fromDegrees(0.0) : drive.getGyroscopeRotation())
                     )
             );
         }
+        //Potential Exponents
+        //x^3
+        //x^1.96 the best so far
+        //x^3.4
+        //x^2.6
+        //x^4.6
+        //x^5.4
+        //x^0.6
         @Override
         public void end(boolean interrupted) {
             // Stop the drive
